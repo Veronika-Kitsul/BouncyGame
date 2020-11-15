@@ -66,8 +66,6 @@ public class Bouncy
 				{
 					bricksList.get(i).draw(g);
 				}
-				
-				isStarted = true;
 			}
 		};
 		
@@ -96,15 +94,15 @@ public class Bouncy
 
 					public void mouseMoved(MouseEvent e) {
 						rect.move(e.getX());
-
-						frame.getContentPane().repaint();
-					}
 						
+						frame.getContentPane().repaint();
+					}	
 				});
+				
+				// here i change isStarted to true
 				isStarted = true;
 				
 			}
-	
 		});
 		
 		JLabel scoreboard = new JLabel("Score: " + score);
@@ -113,25 +111,17 @@ public class Bouncy
 		JButton endGame = new JButton("End The Game");
 		buttons.add(endGame);
 		
-		while(true)
-		{
-			ball.move();
-			sleep(10);
-		}
+		
 		
 		endGame.addActionListener(new ActionListener()
-				{
-					public void actionPerformed(ActionEvent e) 
-					{
-						isStarted = false;
-					}
-				});
-		
-		
-		
-		
-				
-		
+		{
+			public void actionPerformed(ActionEvent e) 
+			{
+				isStarted = false;
+			}
+		});
+
+	
 		
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setFocusable(true);
@@ -139,6 +129,13 @@ public class Bouncy
 		frame.setResizable(false);
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
+		
+		// this doesn't work when i have isStarted == true, but it works if i change the condition to just true
+		while (isStarted == true)
+		{
+			sleep(50);
+			ball.move();
+		}
 	}
 	
 	private static void sleep(int time) {
