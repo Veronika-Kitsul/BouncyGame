@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import java.awt.Color;
 import java.awt.Dimension;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 import java.awt.event.MouseListener;
 import java.awt.event.MouseMotionListener;
 
@@ -24,13 +25,16 @@ public class Bouncy
 	Plate rect = new Plate();
 	Ball ball = new Ball();
 	boolean isStarted = false;
+	int plateX;
+	int plateY;
+	JFrame frame = new JFrame();
 	
 	ArrayList<Bricks> bricksList = new ArrayList<Bricks>();
 	
 	public Bouncy() 
 	{
 		
-		JFrame frame = new JFrame();
+		
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(Bouncy.WIDTH, Bouncy.HEIGHT));
 		frame.add(panel);
@@ -94,16 +98,19 @@ public class Bouncy
 
 					public void mouseMoved(MouseEvent e) {
 						rect.move(e.getX());
-						
+						plateX = e.getX();
+						plateY = e.getY();
 						frame.getContentPane().repaint();
 					}	
 				});
+				
 				
 				// here i change isStarted to true
 				isStarted = true;
 				
 			}
 		});
+		
 		
 		JLabel scoreboard = new JLabel("Score: " + score);
 		buttons.add(scoreboard);
@@ -131,10 +138,47 @@ public class Bouncy
 		frame.setVisible(true);
 		
 		// this doesn't work when i have isStarted == true, but it works if i change the condition to just true
-		while (isStarted == true)
+		while (true)
 		{
+			if (isStarted == true)
+			{
+				ball.move();
+				checkIntersections();
+				frame.getContentPane().repaint();
+			}
 			sleep(50);
-			ball.move();
+		}
+	}
+	
+	public void checkIntersections() 
+	{		
+		if (new Rectangle(plateX, plateY, Plate.widthRect, Plate.HEIGHTRECT).intersects(new Rectangle(ball.x, Ball.Bally, Ball.ballRadius,  Ball.ballRadius)) == true)
+		{
+			Ball.velocityY = - Ball.velocityY;
+		}
+		
+		// problems here
+		for (int i = 0; i < bricksList.size(); i++)
+		{	
+			if (new Rectangle(x, y, (Bouncy.HEIGHT / Bricks.numberInX), Bricks.rectHeight).intersects(new Rectangle(ball.x, Ball.Bally, Ball.ballRadius,  Ball.ballRadius)))
+			{
+				bricksList.remove(i);
+				
+				// how do i actually update it????
+				score++;
+				frame.getContentPane().repaint();
+			}
+		}
+		
+
+		// if the ball hits the lower bound, set score to 0
+		// also need to stop it completely
+		if (Ball.Bally >= (Bouncy.HEIGHT - 100))
+		{
+			
+			score = 0;
+			// OptionPane pane = new OptionPane();
+			// pane.window();
 		}
 	}
 	
@@ -150,6 +194,7 @@ public class Bouncy
 		
 	}
 	
+	// when there is no bricks left - message about you won
 	
 	public static void main(String[] args) 
 	{

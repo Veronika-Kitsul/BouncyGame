@@ -6,9 +6,11 @@ import java.awt.Graphics;
 public class Ball {
 
 	// setting ball radius to be constant
-	int ballRadius = 38;
+	public static final int ballRadius = 38;
 	int x = (Bouncy.WIDTH - ballRadius) / 2;
-	int y = (Bouncy.HEIGHT - 100 - Plate.HEIGHTRECT - ballRadius);
+	public static int Bally = (Bouncy.HEIGHT - 100 - Plate.HEIGHTRECT - ballRadius);
+	public static int velocityX = 20;
+	public static int velocityY = 20;
 	
 	public Ball() 
 	{
@@ -19,13 +21,25 @@ public class Ball {
 	public void draw(Graphics g) 
 	{
 		g.setColor(new Color(94, 184, 101));
-		g.fillOval(x, y, ballRadius,  ballRadius);
+		g.fillOval(x, Bally, ballRadius,  ballRadius);
 	}
 	
 	public void move()
 	{
-		x = x + 20;
-		y = y - 20;
+
+		if ((x >= (Bouncy.WIDTH - ballRadius)) || (x <= 0) )
+		{
+			 velocityX = - velocityX;
+		}
+		
+		// get rid of the second part!!!!!
+		if (Bally <= 0 || Bally >= (Bouncy.HEIGHT - 100 - ballRadius))
+		{
+			velocityY = - velocityY;
+		}
+		
+		x = x + velocityX;
+		Bally = Bally - velocityY;
 	}
 
 }
