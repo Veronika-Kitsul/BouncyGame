@@ -116,11 +116,11 @@ public class Bouncy
 		buttons.add(scoreboard);
 		
 		// creating end game button and adding it to the panel
-		JButton endGame = new JButton("End The Game");
-		buttons.add(endGame);
+		JButton pause = new JButton("Pause");
+		buttons.add(pause);
 		
 		// setting isStarted to false, so the ball stops moving
-		endGame.addActionListener(new ActionListener()
+		pause.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
@@ -183,6 +183,12 @@ public class Bouncy
 			OptionPane pane = new OptionPane();
 			pane.window();
 			isStarted = false;
+		}
+		
+		if (bricksList.size() == 0)
+		{
+			GameWon youWon = new GameWon();
+			youWon.message();
 		}
 	}
 	

@@ -5,18 +5,18 @@ import java.awt.Dimension;
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+public class GameWon {
 
-public class OptionPane {
-
-	public OptionPane() {
+	public GameWon() 
+	{
 		
-	}
-	
-	public void window()
+	}	
+			
+	public void message()
 	{
 		JFrame frame = new JFrame();
 		
-		JButton quit = new JButton("Game over. Close this window to quit.");
+		JButton quit = new JButton("You won! Close this window to quit.");
 		frame.add(quit);
 		
 		frame.setSize(300, 100);

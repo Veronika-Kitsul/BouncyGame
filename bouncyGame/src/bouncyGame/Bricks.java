@@ -20,6 +20,7 @@ public class Bricks extends Rectangle {
 
 	public void draw(Graphics g)
 	{
+		// drawing bricks and their frame
 		g.setColor(Color.black);
 		g.drawRect(x, y, (Bouncy.WIDTH / Bricks.numberInX), Bricks.rectHeight);
 		g.setColor(new Color(247, 186, 72));

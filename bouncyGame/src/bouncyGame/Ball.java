@@ -17,7 +17,7 @@ public class Ball {
 		
 	}
 	
-	// draw a ball in the center 
+	// draw a ball in the center on top of the plate
 	public void draw(Graphics g) 
 	{
 		g.setColor(new Color(94, 184, 101));
@@ -26,12 +26,13 @@ public class Ball {
 	
 	public void move()
 	{
-
+		// if it hits any of the walls, change x velocity
 		if ((Ballx >= (Bouncy.WIDTH - ballRadius)) || (Ballx <= 0) )
 		{
 			 velocityX = - velocityX;
 		}
 		
+		// if it hits the top bound, change y velocity
 		if (Bally <= 0)
 		{
 			velocityY = - velocityY;
