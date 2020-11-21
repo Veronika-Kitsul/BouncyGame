@@ -28,18 +28,18 @@ public class Bouncy
 	int plateX;
 	int plateY;
 	JFrame frame = new JFrame();
+	JLabel scoreboard = new JLabel("Score: " + score);
 	
 	ArrayList<Bricks> bricksList = new ArrayList<Bricks>();
 	
 	public Bouncy() 
 	{
-		
-		
+		// setting the overall panel and it's size, adding it to frame
 		JPanel panel = new JPanel();
 		panel.setPreferredSize(new Dimension(Bouncy.WIDTH, Bouncy.HEIGHT));
 		frame.add(panel);
 		
-
+		// creating the array list of bricks and their coordinates
 		for (int i = 0; i < Bricks.numberInY; i++)
 		{
 			for (int j = 0; j < Bricks.numberInX; j++)
@@ -52,12 +52,12 @@ public class Bouncy
 		}
 		
 		
-		
+		// panel for the game area
 		JPanel game = new JPanel() 
 		{
 			public void paintComponent(Graphics g)
 			{
-				// add background as a blue rectangle
+				// add background as a rectangle
 				g.setColor(new Color(210, 200, 200));
 				g.fillRect(0, 0, Bouncy.WIDTH, Bouncy.HEIGHT);
 				
@@ -65,7 +65,7 @@ public class Bouncy
 				rect.draw(g);
 				ball.draw(g);
 				
-				//
+				// actually drawing the bricks from the list
 				for (int i = 0; i < bricksList.size(); i++)
 				{
 					bricksList.get(i).draw(g);
@@ -73,11 +73,11 @@ public class Bouncy
 			}
 		};
 		
-		
+		// adding game area to the overall panel and setting it's size
 		panel.add(game);
 		game.setPreferredSize(new  Dimension (WIDTH, HEIGHT - 100));
 	
-		
+		// setting up the buttons area and adding it to the panel
 		JPanel buttons = new JPanel();
 		panel.add(buttons);
 		
@@ -85,7 +85,7 @@ public class Bouncy
 		JButton start = new JButton("Start");
 		buttons.add(start);
 		
-
+		// an action listener for the mouse movement so it can move the plate
 		start.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
@@ -96,40 +96,41 @@ public class Bouncy
 						
 					}
 
-					public void mouseMoved(MouseEvent e) {
-						rect.move(e.getX());
-						plateX = e.getX();
-						plateY = e.getY();
-						frame.getContentPane().repaint();
+					public void mouseMoved(MouseEvent e) 
+					{
+						if (isStarted == true)
+						{
+							rect.move(e.getX());
+							plateX = e.getX();
+							frame.getContentPane().repaint();
+						}
 					}	
 				});
 				
-				
 				// here i change isStarted to true
 				isStarted = true;
-				
 			}
 		});
 		
-		
-		JLabel scoreboard = new JLabel("Score: " + score);
+		// adding scoreboard to the buttons panel
 		buttons.add(scoreboard);
 		
+		// creating end game button and adding it to the panel
 		JButton endGame = new JButton("End The Game");
 		buttons.add(endGame);
 		
-		
-		
+		// setting isStarted to false, so the ball stops moving
 		endGame.addActionListener(new ActionListener()
 		{
 			public void actionPerformed(ActionEvent e) 
 			{
 				isStarted = false;
+				
 			}
 		});
 
 	
-		
+		// necessary setup of the frame
 		frame.setSize(WIDTH, HEIGHT);
 		frame.setFocusable(true);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -137,7 +138,7 @@ public class Bouncy
 		frame.setLocationRelativeTo(null);
 		frame.setVisible(true);
 		
-		// this doesn't work when i have isStarted == true, but it works if i change the condition to just true
+		// a loop to move the ball, and run the intersections check
 		while (true)
 		{
 			if (isStarted == true)
@@ -150,39 +151,45 @@ public class Bouncy
 		}
 	}
 	
+	// a method to check intersections
 	public void checkIntersections() 
-	{		
-		if (new Rectangle(plateX, plateY, Plate.widthRect, Plate.HEIGHTRECT).intersects(new Rectangle(ball.x, Ball.Bally, Ball.ballRadius,  Ball.ballRadius)) == true)
+	{	
+		// intersections with the plate 
+		if (new Rectangle(plateX, Plate.y, Plate.widthRect, Plate.HEIGHTRECT).intersects(new Rectangle(Ball.Ballx, Ball.Bally, Ball.ballRadius,  Ball.ballRadius)) == true)
 		{
 			Ball.velocityY = - Ball.velocityY;
 		}
 		
-		// problems here
+		// check for intersections with the bricks
 		for (int i = 0; i < bricksList.size(); i++)
 		{	
-			if (new Rectangle(x, y, (Bouncy.HEIGHT / Bricks.numberInX), Bricks.rectHeight).intersects(new Rectangle(ball.x, Ball.Bally, Ball.ballRadius,  Ball.ballRadius)))
+			Bricks curr= bricksList.get(i);
+			if (curr.intersects(new Rectangle(Ball.Ballx, Ball.Bally, Ball.ballRadius,  Ball.ballRadius)))
 			{
+				// remove bricks we hit and bounce to the other side
 				bricksList.remove(i);
+				Ball.velocityY = - Ball.velocityY;
 				
-				// how do i actually update it????
+				// score update and repaint of the panel
 				score++;
+				scoreboard.setText("Score: " + score);
 				frame.getContentPane().repaint();
 			}
 		}
 		
-
-		// if the ball hits the lower bound, set score to 0
-		// also need to stop it completely
-		if (Ball.Bally >= (Bouncy.HEIGHT - 100))
+		// if ball hits the lower pane, the game is over, call the pop up window class, stop the game
+		if (Ball.Bally >= (Bouncy.HEIGHT - 100 - Ball.ballRadius))
 		{
-			
-			score = 0;
-			// OptionPane pane = new OptionPane();
-			// pane.window();
+			OptionPane pane = new OptionPane();
+			pane.window();
+			isStarted = false;
 		}
 	}
 	
-	private static void sleep(int time) {
+	
+	// sleep method for pauses in game
+	private static void sleep(int time) 
+	{
 		try 
 		{
 			Thread.sleep(time);
@@ -191,14 +198,11 @@ public class Bouncy
 		{
 			e.printStackTrace();
 		}
-		
 	}
 	
-	// when there is no bricks left - message about you won
 	
 	public static void main(String[] args) 
 	{
 		new Bouncy();
-
 	}
 }

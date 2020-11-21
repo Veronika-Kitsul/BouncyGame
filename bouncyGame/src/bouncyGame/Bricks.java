@@ -2,8 +2,9 @@ package bouncyGame;
 
 import java.awt.Color;
 import java.awt.Graphics;
+import java.awt.Rectangle;
 
-public class Bricks {
+public class Bricks extends Rectangle {
 
 	// number of bricks we have
 	public static final int numberInX = 10;
@@ -12,23 +13,21 @@ public class Bricks {
 	// height of each brick
 	public static final int rectHeight = 40;
 	
-	int x;
-	int y;
-	
-
 	public Bricks(int x, int y) {
-		this.x = x;
-		this.y = y;
+		super(x,y,(Bouncy.WIDTH / numberInX), rectHeight);
 	}
 
 
 	public void draw(Graphics g)
 	{
 		g.setColor(Color.black);
-		g.drawRect(x, y, (Bouncy.HEIGHT / Bricks.numberInX), Bricks.rectHeight);
+		g.drawRect(x, y, (Bouncy.WIDTH / Bricks.numberInX), Bricks.rectHeight);
 		g.setColor(new Color(247, 186, 72));
-		g.fillRect(x, y, (Bouncy.HEIGHT / Bricks.numberInX), Bricks.rectHeight);
+		g.fillRect(x, y, (Bouncy.WIDTH / Bricks.numberInX), Bricks.rectHeight);
 		
 	}
 
 }
+	
+
+

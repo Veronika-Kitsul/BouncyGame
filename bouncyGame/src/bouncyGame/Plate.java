@@ -7,7 +7,7 @@ public class Plate {
 
 	public static final int widthRect = 80, HEIGHTRECT = 25;
 	int x = (Bouncy.WIDTH - widthRect)/2;
-	int y = Bouncy.HEIGHT - 100 - HEIGHTRECT;
+	public static int y = Bouncy.HEIGHT - 100 - HEIGHTRECT;
 	
 	public Plate() {
 		
