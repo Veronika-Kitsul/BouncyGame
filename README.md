@@ -1,4 +1,4 @@
-# BouncyGame
+# Bouncy Game
 
 Hi! This is a simple Bouncy Game on Java. At the start of the game you are given a ball on a petal and several blocks up above that you have to break through. 
 The ball will automatically start bouncing back and forth, and once it hits any of the blocks -- they pop. On the way back, however, it's your job to catch the 
